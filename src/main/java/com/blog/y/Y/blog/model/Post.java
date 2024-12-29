@@ -20,7 +20,6 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    // Costruttore vuoto
     public Post() {}
 
     // Getter e Setter

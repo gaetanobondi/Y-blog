@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Definisce un commento -->
+  <xs:complexType name="commentType">
+    <xs:sequence>
+      <xs:element name="author" type="xs:string"/>
+      <xs:element name="text" type="xs:string" maxOccurs="120"/>
+      <xs:element name="createdAt" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Definisce un post -->
+  <xs:complexType name="postType">
+    <xs:sequence>
+      <xs:element name="author" type="xs:string"/>
+      <xs:element name="text" type="xs:string" maxOccurs="280"/>
+      <xs:element name="createdAt" type="xs:dateTime"/>
+      <xs:element name="comments" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="comment" type="commentType" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Gruppo di post -->
+  <xs:element name="posts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="post" type="postType" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

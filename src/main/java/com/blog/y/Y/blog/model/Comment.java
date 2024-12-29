@@ -22,7 +22,6 @@ public class Comment {
     @JsonIgnore
     private Post post;
 
-    // Costruttore vuoto
     public Comment() {}
 
     // Getter e Setter

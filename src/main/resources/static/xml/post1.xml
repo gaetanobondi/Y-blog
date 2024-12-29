@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<posts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd">
+  <post>
+    <author>Giovanni</author>
+    <date>2024-11-06</date>
+    <time>08:30:00</time>
+    <text>Ciao a tutti! Come va la giornata?</text>
+    <comments>
+      <comment>
+        <author>Alice</author>
+        <date>2024-11-06</date>
+        <time>09:00:00</time>
+        <text>Ciao Giovanni! Tutto bene, grazie!</text>
+      </comment>
+      <comment>
+        <author>Marco</author>
+        <date>2024-11-06</date>
+        <time>09:15:00</time>
+        <text>Anch'io sto bene, grazie per chiedere!</text>
+      </comment>
+    </comments>
+  </post>
+
+  <post>
+    <author>Laura</author>
+    <date>2024-11-06</date>
+    <time>10:00:00</time>
+    <text>Oggi è una giornata perfetta per una passeggiata!</text>
+    <comments>
+      <comment>
+        <author>Giovanni</author>
+        <date>2024-11-06</date>
+        <time>10:30:00</time>
+        <text>Hai ragione! Il tempo è ideale.</text>
+      </comment>
+    </comments>
+  </post>
+</posts>
