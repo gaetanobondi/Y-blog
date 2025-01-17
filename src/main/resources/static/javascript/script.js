@@ -90,16 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById("submitNewPost").addEventListener("click", async () => {
         try {
-            let author = 'Gaetano';
             let message = document.getElementById('new-post');
-            const response = await fetch('http://localhost:8080/api/post', {
+            const response = await fetch('/api/post', {
                 method: 'POST',
+                credentials: "include", // Include i cookie di sessione
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*'
                 },
                 body: JSON.stringify({
-                    author: author,
                     messageText: message.value
                 })
             });
@@ -179,7 +178,6 @@ function closeModal() {
 
 async function newComment(postId) {
             try {
-                let author = 'Gaetano';
                 let message = document.getElementById('comment-input');
                 let response = await fetch(`http://localhost:8080/api/post/${postId}/comment`, {
                     method: 'POST',
@@ -188,7 +186,6 @@ async function newComment(postId) {
                         'Access-Control-Allow-Origin': '*'
                     },
                     body: JSON.stringify({
-                        author: author,
                         commentText: message.value
                     })
                 })

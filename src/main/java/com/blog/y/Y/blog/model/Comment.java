@@ -10,7 +10,21 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String author;
+    // Relazione molti a uno con User (un commento ha un solo autore)
+    @ManyToOne
+    @JoinColumn(name = "author_id") // La colonna author_id nella tabella Post
+    private User author; // Questo campo rappresenta l'autore del post
+
+    public Comment() {}
+
+    // Getter e Setter
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     private LocalDateTime createdAt;
 
@@ -22,45 +36,26 @@ public class Comment {
     @JsonIgnore
     private Post post;
 
-    public Comment() {}
-
     // Getter e Setter
     public Long getId() {
         return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    public String getCommentText() {
+        return commentText;
     }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+    public Post getPost() {
+        return post;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    public String getCommentText() {
-        return commentText;
-    }
-
     public void setCommentText(String commentText) {
         this.commentText = commentText;
     }
-
-    public Post getPost() {
-        return post;
-    }
-
     public void setPost(Post post) {
         this.post = post;
     }

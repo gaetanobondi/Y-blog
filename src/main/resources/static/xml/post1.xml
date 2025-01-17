@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<posts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd">
+<posts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemeLocation="schema.xsd">
   <post>
     <author>Giovanni</author>
     <date>2024-11-06</date>

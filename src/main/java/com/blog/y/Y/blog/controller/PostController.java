@@ -2,13 +2,16 @@ package com.blog.y.Y.blog.controller;
 
 import com.blog.y.Y.blog.model.Comment;
 import com.blog.y.Y.blog.model.Post;
+import com.blog.y.Y.blog.model.User;
 import com.blog.y.Y.blog.repository.CommentRepository;
 import com.blog.y.Y.blog.repository.PostRepository;
 
+import com.blog.y.Y.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,20 +29,27 @@ public class PostController {
     @Autowired
     private CommentRepository commentRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
     // Creazione di un nuovo post
     @PostMapping("/api/post")
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+    public ResponseEntity<Post> createPost(@RequestBody Post post, Authentication authentication) {
+        User userLogged = userRepo.getUserByUsername(authentication.getName()); // ottengo l'utente loggato
+        post.setAuthor(userLogged); // Imposto l'utente loggato come autore del post
         post.setCreatedAt(LocalDateTime.now()); // Imposta la data e ora corrente
         return ResponseEntity.ok(postRepo.save(post));
     }
 
     // Aggiunta di un commento a un post specifico
     @PostMapping("/api/post/{postId}/comment")
-    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Comment comment) {
+    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Comment comment, Authentication authentication) {
         Post post = postRepo.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post non trovato con id: " + postId));
 
+        User userLogged = userRepo.getUserByUsername(authentication.getName()); // ottengo l'utente loggato
         comment.setPost(post);
+        comment.setAuthor(userLogged); // Imposto l'id dell'utente loggato come autore del commento
         comment.setCreatedAt(LocalDateTime.now()); // Imposta la data corrente
 
         return ResponseEntity.ok(commentRepo.save(comment));
@@ -61,7 +71,7 @@ public class PostController {
         comments.forEach(c -> {
             xml.append("<comment>")
                     .append("<id>").append(c.getId()).append("</id>")
-                    .append("<author>").append(c.getAuthor()).append("</author>")
+                    .append("<author>").append(c.getAuthor().getUsername()).append("</author>")
                     .append("<createdAt>").append(c.getCreatedAt()).append("</createdAt>")
                     .append("<text>").append(c.getCommentText()).append("</text>")
                     .append("</comment>");
@@ -95,7 +105,7 @@ public class PostController {
         posts.getContent().forEach(p -> {
             xml.append("<post>")
                     .append("<id>").append(p.getId()).append("</id>")
-                    .append("<author>").append(p.getAuthor()).append("</author>")
+                    .append("<author>").append(p.getAuthor().getUsername()).append("</author>")
                     .append("<createdAt>").append(p.getCreatedAt()).append("</createdAt>")
                     .append("<message>").append(p.getMessageText()).append("</message>");
 
@@ -104,7 +114,7 @@ public class PostController {
             p.getComments().forEach(c -> {
                 xml.append("<comment>")
                         .append("<id>").append(c.getId()).append("</id>")
-                        .append("<author>").append(c.getAuthor()).append("</author>")
+                        .append("<author>").append(c.getAuthor().getUsername()).append("</author>")
                         .append("<createdAt>").append(c.getCreatedAt()).append("</createdAt>")
                         .append("<text>").append(c.getCommentText()).append("</text>")
                         .append("</comment>");
@@ -121,10 +131,9 @@ public class PostController {
     }
 
     @GetMapping("/home")
-    public String home(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+    public String home(@RequestParam(value = "page", defaultValue = "1") int page, Model model, Authentication authentication) {
         // Crea un PageRequest con dimensione di 5 elementi per pagina
         PageRequest pageRequest = PageRequest.of(page - 1, 5);
-
         // Recupera i post
         Page<Post> posts = postRepo.findAll(pageRequest);
         if (posts.isEmpty()) {
@@ -133,6 +142,8 @@ public class PostController {
             model.addAttribute("postsEmpty", false);
         }
         model.addAttribute("posts", posts);
+        String username = authentication.getName(); // Ottengo l'username
+        model.addAttribute("username", username);
         return "home";
     }
 }

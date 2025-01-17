@@ -10,9 +10,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String author;
-
-    private LocalDateTime createdAt;
+    // Relazione molti a uno con User (un post ha un solo autore)
+    @ManyToOne
+    @JoinColumn(name = "author_id") // La colonna author_id nella tabella Post
+    private User author; // Questo campo rappresenta l'autore del post
 
     @Column(length = 280) // Limita la lunghezza del contenuto a 280 caratteri
     private String messageText;
@@ -20,45 +21,39 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
+    private LocalDateTime createdAt;
+
     public Post() {}
+
+    // Getter e Setter
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     // Getter e Setter
     public Long getId() {
         return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    public String getMessageText() {
+        return messageText;
     }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getMessageText() {
-        return messageText;
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public void setMessageText(String messageText) {
         this.messageText = messageText;
     }
-
-    public List<Comment> getComments() {
-        return comments;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
-
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }

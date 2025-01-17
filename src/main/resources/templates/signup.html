@@ -4,25 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrazione y.com</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <div class="login-container">
         <h1>Registrati a Y</h1>
-        <form>
-            <input type="email" name="email" placeholder="Email" required>
+        <div th:if="${error}">
+            <p th:text="${error}"></p>
+        </div>
+        <form th:action="@{/signup}" method="post">
+            <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <input type="password" name="repeat_password" placeholder="Ripeti password" required>
             <button type="submit">Registrati</button>
         </form>
+        <span style="display:block; margin-top:10px">Sei già registrato? <a href="/login">Entra</a></span>
     </div>
-    <script>
-        let button = document.querySelector('button[type=\'submit\']');
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.location.href = "home";
-        });
-    </script>
 </body>
 </html>

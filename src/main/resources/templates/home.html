@@ -17,9 +17,12 @@
     <div class="logo">Y</div>
     <nav>
         <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="#">Notifiche</a></li>
-            <li><a href="#">Profilo</a></li>
+            <li th:text="'Ciao ' + ${username}"></li>
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="logout-button" value="Esci"/>
+                </form>
+            </li>
         </ul>
     </nav>
 </header>
@@ -41,7 +44,7 @@
 
             <!-- Lista dei post -->
             <div class="post" th:each="post, iterStat : ${posts}" th:data-postid="${post.id}">
-                <div id="author" class="user" th:text="${post.author}">Autore</div>
+                <div id="author" class="user" th:text="${post.author.getUsername()}">Autore</div>
                 <p id="message" th:text="${post.messageText}">Messaggio</p>
                 <div class="post-info">
                     <span class="date" id="createdAt" th:text="${post.createdAt}"></span>
